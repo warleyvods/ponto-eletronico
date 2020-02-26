@@ -5,6 +5,8 @@ import com.pontoeletronico.horas.service.DiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +37,9 @@ public class DiaController {
         return diaService.buscarPorId2(id);
     }
 
-    /*@GetMapping("/buscar/{id}/obterHora/")
-    public Date obterHora(@PathVariable Long id) {
-        return diaService.obterHora(id);
-    }*/
+    @GetMapping("/buscar/{id}/obterHora/")
+    public Date obterHora(@PathVariable LocalDate dataDoDia) {
+        return diaService.obterHora(dataDoDia);
+    }
 
 }
