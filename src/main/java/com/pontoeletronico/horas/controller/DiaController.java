@@ -3,9 +3,11 @@ package com.pontoeletronico.horas.controller;
 import com.pontoeletronico.horas.entity.Dia;
 import com.pontoeletronico.horas.service.DiaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +40,8 @@ public class DiaController {
     }
 
     @GetMapping("/buscar/{id}/obterHora/")
-    public Date obterHora(@PathVariable LocalDate dataDoDia) {
-        return diaService.obterHora(dataDoDia);
+    public LocalTime obterHora(@DateTimeFormat(pattern = "yyyy-MM-dd") Date dataDoDia) {
+        return diaService.obterHora(dataDoDia.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     }
 
 }
