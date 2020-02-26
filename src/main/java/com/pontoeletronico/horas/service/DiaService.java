@@ -3,15 +3,21 @@ package com.pontoeletronico.horas.service;
 import com.pontoeletronico.horas.entity.Dia;
 import com.pontoeletronico.horas.entity.Hora;
 import com.pontoeletronico.horas.repository.DiaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DiaService {
+
+    private static Logger log = LoggerFactory.getLogger(DiaService.class);
 
     @Autowired
     DiaRepository diaRepository;
@@ -28,42 +34,46 @@ public class DiaService {
         return diaRepository.getOne(id);
     }
 
-    public void removerDia(Dia dia) {
-        diaRepository.delete(dia);
+    public Optional<Dia> buscarPorId2(Long id) {
+        return diaRepository.findById(id);
     }
 
-    public void obterHora() {
+    public void removerDia(Long id) {
+        diaRepository.deleteById(id);
+    }
+
+    /*public Date obterHora(Long id) {
         SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
 
-        for (Dia dia : this.listar()) {
-            System.out.println("Primeira Hora: " + FORMAT.format(dia.getHoraDeEntrada()));
-            System.out.println("Segunda  Hora: " + FORMAT.format(dia.getHoraDeSaidaAlmoco()));
-            System.out.println("Terceira Hora: " + FORMAT.format(dia.getHoraDeEntradaAlmoco()));
-            System.out.println(" Quarta  Hora: " + FORMAT.format(dia.getHoraDeSaida()));
+        Dia dia = buscarPorId(id);
 
-            Calendar horaDeEntrada = Calendar.getInstance();
-            Calendar horaDeSaidaAlmoco = Calendar.getInstance();
-            Calendar horaDeEntradaAlmoco = Calendar.getInstance();
-            Calendar horaDeSaida = Calendar.getInstance();
+        log.info("Primeira Hora %s ", FORMAT.format(dia.getHoraDeEntrada()));
+        log.info("Segunda  Hora %s ", FORMAT.format(dia.getHoraDeSaidaAlmoco()));
+        log.info("Terceira Hora %s ", FORMAT.format(dia.getHoraDeEntradaAlmoco()));
+        log.info(" Quarta  Hora %s ", FORMAT.format(dia.getHoraDeSaida()));
 
-            horaDeEntrada.setTime(dia.getHoraDeEntrada());
-            horaDeSaidaAlmoco.setTime(dia.getHoraDeSaidaAlmoco());
-            horaDeEntradaAlmoco.setTime(dia.getHoraDeEntradaAlmoco());
-            horaDeSaida.setTime(dia.getHoraDeSaida());
+        Calendar horaDeEntrada = Calendar.getInstance();
+        Calendar horaDeSaidaAlmoco = Calendar.getInstance();
+        Calendar horaDeEntradaAlmoco = Calendar.getInstance();
+        Calendar horaDeSaida = Calendar.getInstance();
+
+        horaDeEntrada.setTime(dia.getHoraDeEntrada());
+        horaDeSaidaAlmoco.setTime(dia.getHoraDeSaidaAlmoco());
+        horaDeEntradaAlmoco.setTime(dia.getHoraDeEntradaAlmoco());
+        horaDeSaida.setTime(dia.getHoraDeSaida());
 
 
-            Long diferencaMili = horaDeSaidaAlmoco.getTimeInMillis() - horaDeEntrada.getTimeInMillis();
-            Hora hr = getDif(diferencaMili);
+        Long diferencaMili = horaDeSaidaAlmoco.getTimeInMillis() - horaDeEntrada.getTimeInMillis();
+        Hora hr = getDif(diferencaMili);
 
-            diferencaMili = horaDeSaida.getTimeInMillis() - horaDeEntradaAlmoco.getTimeInMillis();
-            Hora hr1 = getDif(diferencaMili);
+        diferencaMili = horaDeSaida.getTimeInMillis() - horaDeEntradaAlmoco.getTimeInMillis();
+        Hora hr1 = getDif(diferencaMili);
 
-            Calendar data = hr.obterInstancia(hr1);
+        Calendar data = hr.obterInstancia(hr1);
 
-            System.out.println("Hora:" +FORMAT.format(data.getTime()));
+        return data.getTime();
 
-        }
-    }
+    }*/
 
     private static Hora getDif(long difMilli) {
         int timeInSeconds = (int) difMilli / 1000;

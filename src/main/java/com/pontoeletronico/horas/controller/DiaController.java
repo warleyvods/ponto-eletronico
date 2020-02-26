@@ -1,16 +1,12 @@
 package com.pontoeletronico.horas.controller;
 
 import com.pontoeletronico.horas.entity.Dia;
-import com.pontoeletronico.horas.entity.Hora;
 import com.pontoeletronico.horas.service.DiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/dia")
@@ -18,9 +14,6 @@ public class DiaController {
 
     @Autowired
     DiaService diaService;
-
-
-
 
     @PostMapping("/salvar")
     public Dia salvarDia(@RequestBody Dia dia) {
@@ -32,21 +25,19 @@ public class DiaController {
         return diaService.listar();
     }
 
-    @DeleteMapping("/remover")
-    public void removerDia(@RequestBody Dia dia){
-        diaService.removerDia(dia);
+    @DeleteMapping("/remover/{id}")
+    public void removerDia(@PathVariable Long id){
+        diaService.removerDia(id);
     }
 
     @GetMapping("/buscar/{id}")
-    public Dia buscarPorId(@PathVariable Long id){
-        return diaService.buscarPorId(id);
+    public Optional<Dia> buscarPorId(@PathVariable Long id){
+        return diaService.buscarPorId2(id);
     }
 
-    @GetMapping("/obterHora")
-    public void obterHora() throws ParseException {
-        diaService.obterHora();
-    }
-
-
+    /*@GetMapping("/buscar/{id}/obterHora/")
+    public Date obterHora(@PathVariable Long id) {
+        return diaService.obterHora(id);
+    }*/
 
 }
